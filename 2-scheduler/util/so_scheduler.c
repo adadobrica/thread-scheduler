@@ -16,21 +16,21 @@
 
 enum flag{FALSE, TRUE};
 
-typedef struct thread {
+typedef struct thread_t {
 	so_handler *func;
-	sem_t run;
+	sem_t t_sem;
 	char status[MAXSIZE];
 	tid_t tid;
 	unsigned int thread_priority;
-	unsigned int time_left;
+	unsigned int thr_quantum;
 	unsigned int device;
 	enum flag T_FLAG;
-} thread;
+} thread_t;
 
 typedef struct queue_t {
 	unsigned int max_size;
 	unsigned int **priorities;
-	thread *buff[QUEUE_MAX_SIZE << 1];
+	thread_t *buff[QUEUE_MAX_SIZE << 1];
 	unsigned int size;
 	unsigned int priorities_size;
 } queue_t;
@@ -40,8 +40,8 @@ typedef struct scheduler_t {
 	unsigned int quantum;
 	unsigned int max_events;
 	enum flag FLAG;
-	thread *current_thread;
-	sem_t end;
+	thread_t *current_thread;
+	sem_t s_sem;
 	queue_t threads;
 	queue_t pqueue;
 } scheduler_t;
@@ -53,9 +53,9 @@ static int glob = 0;
 static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 
 static void *thread_func(void *args);
-static void so_update();
-static void so_start(thread *thr);
-static void so_register(thread *thr);
+//static void so_update();
+//static void so_start(thread_t *thr);
+//static void so_register(thread_t *thr);
 
 void error_handler(const char* args) {
 	printf("%s\n", args);
@@ -95,7 +95,7 @@ void init_current_thread() {
 	scheduler->FLAG = FALSE;
 }
 
-void change_thread_status(thread *thr, char string[]) {
+void change_thread_status(thread_t *thr, char string[]) {
 	if (!strcmp(string, BLOCKED)) {
 		memcpy(thr->status, BLOCKED, sizeof(BLOCKED));
 	} else if (!strcmp(string, READY)) {
@@ -115,28 +115,28 @@ void so_start_queue() {
 	scheduler->pqueue.size--;
 }
 
-static void so_start(thread *thr) {
+static void so_start(thread_t *thr) {
 	if (thr == NULL) {
 		return;
 	}
 	so_start_queue();
 	change_thread_status(thr, RUNNING);
-	thr->time_left = scheduler->quantum;
+	thr->thr_quantum = scheduler->quantum;
 	thr->T_FLAG = FALSE;
-	int s = sem_post(&thr->run);
+	int s = sem_post(&thr->t_sem);
 }
 
-void push_pqueue(int pos, thread *thr) {
+void push_pqueue(int pos, thread_t *thr) {
 	if (thr != NULL && scheduler->pqueue.size < scheduler->pqueue.max_size) {
 		scheduler->pqueue.buff[pos] = thr;
 		scheduler->pqueue.size++;
 	}
 }
 
-int find_pos(thread *thr) {
+int find_pos(thread_t *thr) {
 	int pos = 0;
 	unsigned int pqueue_size = scheduler->pqueue.size;
-	thread *queue_thread = scheduler->pqueue.buff[pos];
+	thread_t *queue_thread = scheduler->pqueue.buff[pos];
 	while (pos < pqueue_size && thr->thread_priority > queue_thread->thread_priority) {
 		pos++;
 		queue_thread = scheduler->pqueue.buff[pos];
@@ -144,7 +144,7 @@ int find_pos(thread *thr) {
 	return pos;
 }
 
-static void so_register(thread *thr) {
+static void so_register(thread_t *thr) {
 	if (!thr) {
 		error_handler("thread does not exist");
 	}
@@ -163,29 +163,32 @@ static void so_register(thread *thr) {
 	thr->T_FLAG = FALSE;
 }
 
-thread* queue_peek_at(unsigned int pos) {
-	thread *thr;
+thread_t* queue_peek_at(unsigned int pos) {
+	thread_t *thr;
 	if (pos <= scheduler->pqueue.size) {
 		thr = scheduler->pqueue.buff[pos];
 	}
 	return thr;
 }
 
-void so_update_next(thread *next) {
-	scheduler->current_thread = next;
-	so_start(next);
-	return;
+int so_check_update_next(unsigned int current_priority, unsigned int next_priority) {
+	if (current_priority != next_priority) 
+		return -1;
+	if (current_priority == next_priority) {
+		return 0;
+	}
+	return 1;
 }
 
 static void so_update() {
 	int s;
-	thread *next, *current = scheduler->current_thread;
-
+	thread_t *next, *current = scheduler->current_thread;
+	
 	if (scheduler->pqueue.size == 0) {
 		if (!strcmp(current->status, TERMINATED)) {
-			s = sem_post(&scheduler->end);
+			s = sem_post(&scheduler->s_sem);
 		}
-		sem_post(&current->run);
+		sem_post(&current->t_sem);
 		return;
 
 	} 
@@ -209,18 +212,30 @@ static void so_update() {
 	//if (scheduler->current_thread == NULL || !strcmp(current->status, BLOCKED) || !strcmp(current->status, TERMINATED)) {
 	//	so_update_next(next);
 //	}
-       	if (current->time_left <= 0) {
-		if (current->thread_priority == next->thread_priority) {
+       	if (current->thr_quantum < 1) {
+		int do_next = 0;
+		if (so_check_update_next(current->thread_priority, next->thread_priority) == 0) {
 			so_register(current);
 			scheduler->current_thread = next;
 			so_start(next);
-			return;
+			do_next = 1;
+		//	return;
 			//so_update_next(next);
 		}
-		current->time_left = scheduler->quantum;
+		if (do_next == 1) {
+			return;
+		}
+		//int valid = so_check_update_next(current->thread_priority, next->thread_priority);
+		//if (valid == 0) {
+		//	so_register(current);
+		//	scheduler->current_thread = next;
+		//	so_start(next);
+		//	return;
+		//}
+		current->thr_quantum = scheduler->quantum;
 	}
 
-	sem_post(&current->run);
+	sem_post(&current->t_sem);
 }
 
 int so_init(unsigned int time_quantum, unsigned int io) {
@@ -245,7 +260,7 @@ int so_init(unsigned int time_quantum, unsigned int io) {
 
 		int pshared = 0;
 		int value = 1;
-		int s = sem_init(&scheduler->end, pshared, value);
+		int s = sem_init(&scheduler->s_sem, pshared, value);
 		
 		if (s != 0) {
 			error_handler("sem init failed");
@@ -265,8 +280,8 @@ int check_so_fork_params(so_handler *func, unsigned int priority) {
 }
 
 
-static thread *thread_create(so_handler *func, unsigned int priority) {
-	thread *thr = calloc(1, sizeof(thread));
+static thread_t *thread_create(so_handler *func, unsigned int priority) {
+	thread_t *thr = calloc(1, sizeof(thread_t));
 	if (!thr) {
 		error_handler("calloc failed");
 	}
@@ -277,11 +292,11 @@ static thread *thread_create(so_handler *func, unsigned int priority) {
 	thr->func = func;
 	thr->thread_priority = priority;
 	thr->tid = -1;
-	thr->time_left = scheduler->quantum;
+	thr->thr_quantum = scheduler->quantum;
 	thr->T_FLAG = FALSE;
 
 	int pshared = 0, value = 0;
-	int s = sem_init(&thr->run, pshared, value);
+	int s = sem_init(&thr->t_sem, pshared, value);
 	if (s) {
 		error_handler("sem init failed");
 	}
@@ -302,7 +317,7 @@ void so_fork_action() {
 	}
 }
 
-void push(thread *thr, int flag) {
+void push(thread_t *thr, int flag) {
 	if (flag == 0) {
 		if (scheduler->threads.size < scheduler->threads.max_size) {
 			scheduler->threads.buff[scheduler->threads.size++] = thr;
@@ -312,7 +327,7 @@ void push(thread *thr, int flag) {
 
 tid_t so_fork(so_handler *func, unsigned int priority) {
 	int s;
-	thread *new_thread;
+	thread_t *new_thread;
 	int valid = check_so_fork_params(func, priority);
 	if (valid == -1) {
 		return INVALID_TID;
@@ -370,10 +385,10 @@ void so_exec() {
 		return;
 	}
 
-	thread *thr = scheduler->current_thread;
-	thr->time_left--;
+	thread_t *thr = scheduler->current_thread;
+	thr->thr_quantum--;
 	so_update();
-	int s = sem_wait(&thr->run);
+	int s = sem_wait(&thr->t_sem);
 	if (s) {
 		error_handler("sem wait failed");
 	}	 
@@ -418,7 +433,7 @@ int check_so_signal_params(unsigned int io) {
 	return 0;
 }
 
-int check_valid_threads_signal(thread *thr, unsigned int io, unsigned int is_not_blocked) {
+int check_valid_threads_signal(thread_t *thr, unsigned int io, unsigned int is_not_blocked) {
 	// using the flag of the thread to mark the blocked threads
 	int do_next = 0;
 
@@ -443,7 +458,7 @@ int so_signal(unsigned int io) {
 	size_t size = scheduler->threads.size;
 
 	for (size_t i = 0; i < size; i++) {
-		thread *thr = scheduler->threads.buff[i];
+		thread_t *thr = scheduler->threads.buff[i];
 		unsigned int is_not_blocked = strcmp(thr->status, BLOCKED);
 		int next = check_valid_threads_signal(thr, io, is_not_blocked);
 		if (next == 1) {
@@ -460,13 +475,13 @@ int so_signal(unsigned int io) {
 }
 
 void queue_clear() {
-	int thr_size = scheduler->threads.size;
-	for (int i = 0; i < thr_size; i++) {
+	size_t thr_size = scheduler->threads.size;
+	for (size_t i = 0; i < thr_size; i++) {
 		free(scheduler->threads.buff[i]);
 	}
 
-	int q_size = scheduler->pqueue.size;
-	for (int i = 0; i < q_size; i++) {
+	size_t q_size = scheduler->pqueue.size;
+	for (size_t i = 0; i < q_size; i++) {
 		int s = pthread_attr_destroy(&attr);
 		free(scheduler->pqueue.buff[i]);
 	}
@@ -484,7 +499,7 @@ void queue_clear() {
 void so_end() {
 	int i;
 	int s;
-	if (!is_initialized) {
+	if (scheduler == NULL) {
 		return;
 	}
 	//s = sem_wait(&scheduler->end);
@@ -499,19 +514,20 @@ void so_end() {
 	}*/
 	queue_clear();
 	is_initialized = 0;
-	s = sem_destroy(&scheduler->end);
+	s = sem_destroy(&scheduler->s_sem);
 	free(scheduler);
 	scheduler = NULL;
 }
 
 
 static void *thread_func(void *args) {
-	int s;
-	thread *thr;
-	thr = (thread *)args;
-	s = sem_wait(&thr->run);
+	thread_t *thr = (thread_t *)args;
+	int s = sem_wait(&thr->t_sem);
+
 	thr->func(thr->thread_priority);
-	memcpy(thr->status, TERMINATED, sizeof(TERMINATED));
+	//memcpy(thr->status, TERMINATED, sizeof(TERMINATED));
+	change_thread_status(thr, TERMINATED);
+	thr->T_FLAG = TRUE;
 	so_update();
 	return NULL;
 }
