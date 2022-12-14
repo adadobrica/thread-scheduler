@@ -1,120 +1,120 @@
-==153083== Memcheck, a memory error detector
-==153083== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==153083== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
-==153083== Command: ./_test/run_test 20
-==153083== Parent PID: 153082
-==153083== 
-==153083== 
-==153083== HEAP SUMMARY:
-==153083==     in use at exit: 68,008 bytes in 11 blocks
-==153083==   total heap usage: 11 allocs, 0 frees, 68,008 bytes allocated
-==153083== 
-==153083== 272 bytes in 1 blocks are possibly lost in loss record 1 of 11
-==153083==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==153083==    by 0x40149CA: allocate_dtv (dl-tls.c:286)
-==153083==    by 0x40149CA: _dl_allocate_tls (dl-tls.c:532)
-==153083==    by 0x4863322: allocate_stack (allocatestack.c:622)
-==153083==    by 0x4863322: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
-==153083==    by 0x484C01A: so_fork (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x10B581: test_sched_21 (test_io.c:225)
-==153083==    by 0x10962B: main (run_test.c:120)
-==153083== 
-==153083== 272 bytes in 1 blocks are possibly lost in loss record 2 of 11
-==153083==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==153083==    by 0x40149CA: allocate_dtv (dl-tls.c:286)
-==153083==    by 0x40149CA: _dl_allocate_tls (dl-tls.c:532)
-==153083==    by 0x4863322: allocate_stack (allocatestack.c:622)
-==153083==    by 0x4863322: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
-==153083==    by 0x484C01A: so_fork (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x10B335: test_sched_handler_21 (test_io.c:177)
-==153083==    by 0x484C54B: thread_func (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x4862608: start_thread (pthread_create.c:477)
-==153083==    by 0x499C162: clone (clone.S:95)
-==153083== 
-==153083== 272 bytes in 1 blocks are possibly lost in loss record 3 of 11
-==153083==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==153083==    by 0x40149CA: allocate_dtv (dl-tls.c:286)
-==153083==    by 0x40149CA: _dl_allocate_tls (dl-tls.c:532)
-==153083==    by 0x4863322: allocate_stack (allocatestack.c:622)
-==153083==    by 0x4863322: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
-==153083==    by 0x484C01A: so_fork (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x10B346: test_sched_handler_21 (test_io.c:178)
-==153083==    by 0x484C54B: thread_func (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x4862608: start_thread (pthread_create.c:477)
-==153083==    by 0x499C162: clone (clone.S:95)
-==153083== 
-==153083== 272 bytes in 1 blocks are possibly lost in loss record 4 of 11
-==153083==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==153083==    by 0x40149CA: allocate_dtv (dl-tls.c:286)
-==153083==    by 0x40149CA: _dl_allocate_tls (dl-tls.c:532)
-==153083==    by 0x4863322: allocate_stack (allocatestack.c:622)
-==153083==    by 0x4863322: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
-==153083==    by 0x484C01A: so_fork (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x10B357: test_sched_handler_21 (test_io.c:179)
-==153083==    by 0x484C54B: thread_func (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x4862608: start_thread (pthread_create.c:477)
-==153083==    by 0x499C162: clone (clone.S:95)
-==153083== 
-==153083== 320 bytes in 1 blocks are still reachable in loss record 5 of 11
-==153083==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==153083==    by 0x484BDDB: thread_create (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x484BFC2: so_fork (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x10B581: test_sched_21 (test_io.c:225)
-==153083==    by 0x10962B: main (run_test.c:120)
-==153083== 
-==153083== 320 bytes in 1 blocks are still reachable in loss record 6 of 11
-==153083==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==153083==    by 0x484BDDB: thread_create (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x484BFC2: so_fork (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x10B335: test_sched_handler_21 (test_io.c:177)
-==153083==    by 0x484C54B: thread_func (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x4862608: start_thread (pthread_create.c:477)
-==153083==    by 0x499C162: clone (clone.S:95)
-==153083== 
-==153083== 320 bytes in 1 blocks are still reachable in loss record 7 of 11
-==153083==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==153083==    by 0x484BDDB: thread_create (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x484BFC2: so_fork (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x10B346: test_sched_handler_21 (test_io.c:178)
-==153083==    by 0x484C54B: thread_func (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x4862608: start_thread (pthread_create.c:477)
-==153083==    by 0x499C162: clone (clone.S:95)
-==153083== 
-==153083== 320 bytes in 1 blocks are still reachable in loss record 8 of 11
-==153083==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==153083==    by 0x484BDDB: thread_create (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x484BFC2: so_fork (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x10B357: test_sched_handler_21 (test_io.c:179)
-==153083==    by 0x484C54B: thread_func (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x4862608: start_thread (pthread_create.c:477)
-==153083==    by 0x499C162: clone (clone.S:95)
-==153083== 
-==153083== 16,384 bytes in 1 blocks are still reachable in loss record 9 of 11
-==153083==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==153083==    by 0x484B643: q_create (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x484BD39: so_init (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x10B570: test_sched_21 (test_io.c:223)
-==153083==    by 0x10962B: main (run_test.c:120)
-==153083== 
-==153083== 16,384 bytes in 1 blocks are still reachable in loss record 10 of 11
-==153083==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==153083==    by 0x484B67F: q_create (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x484BD39: so_init (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x10B570: test_sched_21 (test_io.c:223)
-==153083==    by 0x10962B: main (run_test.c:120)
-==153083== 
-==153083== 32,872 bytes in 1 blocks are still reachable in loss record 11 of 11
-==153083==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==153083==    by 0x484BCF6: so_init (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
-==153083==    by 0x10B570: test_sched_21 (test_io.c:223)
-==153083==    by 0x10962B: main (run_test.c:120)
-==153083== 
-==153083== LEAK SUMMARY:
-==153083==    definitely lost: 0 bytes in 0 blocks
-==153083==    indirectly lost: 0 bytes in 0 blocks
-==153083==      possibly lost: 1,088 bytes in 4 blocks
-==153083==    still reachable: 66,920 bytes in 7 blocks
-==153083==         suppressed: 0 bytes in 0 blocks
-==153083== 
-==153083== For lists of detected and suppressed errors, rerun with: -s
-==153083== ERROR SUMMARY: 4 errors from 4 contexts (suppressed: 0 from 0)
+==16789== Memcheck, a memory error detector
+==16789== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==16789== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==16789== Command: ./_test/run_test 20
+==16789== Parent PID: 16788
+==16789== 
+==16789== 
+==16789== HEAP SUMMARY:
+==16789==     in use at exit: 67,976 bytes in 11 blocks
+==16789==   total heap usage: 11 allocs, 0 frees, 67,976 bytes allocated
+==16789== 
+==16789== 272 bytes in 1 blocks are possibly lost in loss record 1 of 11
+==16789==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16789==    by 0x40149CA: allocate_dtv (dl-tls.c:286)
+==16789==    by 0x40149CA: _dl_allocate_tls (dl-tls.c:532)
+==16789==    by 0x4863322: allocate_stack (allocatestack.c:622)
+==16789==    by 0x4863322: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==16789==    by 0x484BFCE: so_fork (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x10B581: test_sched_21 (test_io.c:225)
+==16789==    by 0x10962B: main (run_test.c:120)
+==16789== 
+==16789== 272 bytes in 1 blocks are possibly lost in loss record 2 of 11
+==16789==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16789==    by 0x40149CA: allocate_dtv (dl-tls.c:286)
+==16789==    by 0x40149CA: _dl_allocate_tls (dl-tls.c:532)
+==16789==    by 0x4863322: allocate_stack (allocatestack.c:622)
+==16789==    by 0x4863322: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==16789==    by 0x484BFCE: so_fork (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x10B335: test_sched_handler_21 (test_io.c:177)
+==16789==    by 0x484C4E0: thread_func (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x4862608: start_thread (pthread_create.c:477)
+==16789==    by 0x499C162: clone (clone.S:95)
+==16789== 
+==16789== 272 bytes in 1 blocks are possibly lost in loss record 3 of 11
+==16789==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16789==    by 0x40149CA: allocate_dtv (dl-tls.c:286)
+==16789==    by 0x40149CA: _dl_allocate_tls (dl-tls.c:532)
+==16789==    by 0x4863322: allocate_stack (allocatestack.c:622)
+==16789==    by 0x4863322: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==16789==    by 0x484BFCE: so_fork (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x10B346: test_sched_handler_21 (test_io.c:178)
+==16789==    by 0x484C4E0: thread_func (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x4862608: start_thread (pthread_create.c:477)
+==16789==    by 0x499C162: clone (clone.S:95)
+==16789== 
+==16789== 272 bytes in 1 blocks are possibly lost in loss record 4 of 11
+==16789==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16789==    by 0x40149CA: allocate_dtv (dl-tls.c:286)
+==16789==    by 0x40149CA: _dl_allocate_tls (dl-tls.c:532)
+==16789==    by 0x4863322: allocate_stack (allocatestack.c:622)
+==16789==    by 0x4863322: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==16789==    by 0x484BFCE: so_fork (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x10B357: test_sched_handler_21 (test_io.c:179)
+==16789==    by 0x484C4E0: thread_func (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x4862608: start_thread (pthread_create.c:477)
+==16789==    by 0x499C162: clone (clone.S:95)
+==16789== 
+==16789== 320 bytes in 1 blocks are still reachable in loss record 5 of 11
+==16789==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16789==    by 0x484BD8F: thread_create (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x484BF76: so_fork (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x10B581: test_sched_21 (test_io.c:225)
+==16789==    by 0x10962B: main (run_test.c:120)
+==16789== 
+==16789== 320 bytes in 1 blocks are still reachable in loss record 6 of 11
+==16789==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16789==    by 0x484BD8F: thread_create (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x484BF76: so_fork (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x10B335: test_sched_handler_21 (test_io.c:177)
+==16789==    by 0x484C4E0: thread_func (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x4862608: start_thread (pthread_create.c:477)
+==16789==    by 0x499C162: clone (clone.S:95)
+==16789== 
+==16789== 320 bytes in 1 blocks are still reachable in loss record 7 of 11
+==16789==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16789==    by 0x484BD8F: thread_create (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x484BF76: so_fork (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x10B346: test_sched_handler_21 (test_io.c:178)
+==16789==    by 0x484C4E0: thread_func (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x4862608: start_thread (pthread_create.c:477)
+==16789==    by 0x499C162: clone (clone.S:95)
+==16789== 
+==16789== 320 bytes in 1 blocks are still reachable in loss record 8 of 11
+==16789==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16789==    by 0x484BD8F: thread_create (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x484BF76: so_fork (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x10B357: test_sched_handler_21 (test_io.c:179)
+==16789==    by 0x484C4E0: thread_func (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x4862608: start_thread (pthread_create.c:477)
+==16789==    by 0x499C162: clone (clone.S:95)
+==16789== 
+==16789== 16,384 bytes in 1 blocks are still reachable in loss record 9 of 11
+==16789==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16789==    by 0x484B643: q_create (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x484BD2B: so_init (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x10B570: test_sched_21 (test_io.c:223)
+==16789==    by 0x10962B: main (run_test.c:120)
+==16789== 
+==16789== 16,384 bytes in 1 blocks are still reachable in loss record 10 of 11
+==16789==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16789==    by 0x484B67F: q_create (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x484BD2B: so_init (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x10B570: test_sched_21 (test_io.c:223)
+==16789==    by 0x10962B: main (run_test.c:120)
+==16789== 
+==16789== 32,840 bytes in 1 blocks are still reachable in loss record 11 of 11
+==16789==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16789==    by 0x484BCE8: so_init (in /home/student/tema_so/so/assignments/2-scheduler/checker-lin/libscheduler.so)
+==16789==    by 0x10B570: test_sched_21 (test_io.c:223)
+==16789==    by 0x10962B: main (run_test.c:120)
+==16789== 
+==16789== LEAK SUMMARY:
+==16789==    definitely lost: 0 bytes in 0 blocks
+==16789==    indirectly lost: 0 bytes in 0 blocks
+==16789==      possibly lost: 1,088 bytes in 4 blocks
+==16789==    still reachable: 66,888 bytes in 7 blocks
+==16789==         suppressed: 0 bytes in 0 blocks
+==16789== 
+==16789== For lists of detected and suppressed errors, rerun with: -s
+==16789== ERROR SUMMARY: 4 errors from 4 contexts (suppressed: 0 from 0)
