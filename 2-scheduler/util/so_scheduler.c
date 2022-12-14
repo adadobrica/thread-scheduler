@@ -189,8 +189,6 @@ thread_t* queue_peek_at(unsigned int pos)
 
 int so_check_update_next(unsigned int current_priority, unsigned int next_priority) 
 {
-	//if (current_priority != next_priority) 
-	//	return -1;
 	if (current_priority == next_priority) 
 		return 0;
 	if (current_priority < next_priority)
@@ -512,12 +510,11 @@ void queue_clear(void)
 
 void so_end(void)
 {
-	int i;
 	int s;
 	if (scheduler == NULL)
 		return;
 
-	for (i = 0; i < scheduler->threads.size; i++)
+	for (size_t i = 0; i < scheduler->threads.size; i++)
 		s = pthread_join(scheduler->threads.buff[i]->tid, NULL);
 
 	queue_clear();
