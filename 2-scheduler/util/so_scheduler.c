@@ -189,18 +189,18 @@ thread_t* queue_peek_at(unsigned int pos)
 
 int so_check_update_next(unsigned int current_priority, unsigned int next_priority) 
 {
-	if (current_priority != next_priority) 
-		return -1;
+	//if (current_priority != next_priority) 
+	//	return -1;
 	if (current_priority == next_priority) 
 		return 0;
 	if (current_priority < next_priority)
-		return 0;
+		return 2;
 	return 1;
 }
 
 // function that updates the scheduler and resets the thread's quantum
 
-static void so_update()
+void so_update()
 {
 	int s;
 	thread_t *next, *current = scheduler->current_thread;
@@ -220,6 +220,10 @@ static void so_update()
 		return;
 	}
 
+	int check = so_check_update_next(current->thread_priority, next->thread_priority);
+	int priorities_check = 0;
+
+	
        	if (current->thr_quantum < 1) {
 		int do_next = 0;
 		if (so_check_update_next(current->thread_priority, next->thread_priority) == 0) {
@@ -230,9 +234,25 @@ static void so_update()
 		}
 		if (do_next == 1) {
 			current->thr_quantum = scheduler->quantum;
-			return;
+			priorities_check = 1;
 		}
 		current->thr_quantum = scheduler->quantum;
+	}
+
+
+	if (check == 2) {
+		so_register(current);
+		scheduler->current_thread = next;
+		so_start(next);
+		scheduler->FLAG = TRUE;
+		priorities_check = 1;
+
+	}
+
+	if (priorities_check == 1) {
+		next->T_FLAG = FALSE;
+		return;
+
 	}
 
 	sem_post(&current->t_sem);
